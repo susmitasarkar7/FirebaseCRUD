@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ShoppingItem } from 'src/app/models/shopping-item/shopping-item.interface';
 import { AngularFireDatabase, FirebaseListObservable } from "angularfire2/database";
+import { NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-add-shopping',
@@ -14,7 +15,7 @@ export class AddShoppingPage implements OnInit {
 
   shoppingItemRef$: FirebaseListObservable<ShoppingItem[]>
 
-  constructor(private database: AngularFireDatabase) { 
+  constructor(private database: AngularFireDatabase, private navCtrl: NavController) { 
     this.shoppingItemRef$ = this.database.list('shopping-list');
 
     /*
@@ -44,6 +45,12 @@ export class AddShoppingPage implements OnInit {
 
     // Log the results out to the console
     console.log(shoppingItem);
+
+    // Reset our ShoppingItem
+    this.shoppingItem = {} as ShoppingItem;
+
+    // Navigate the user to the ShoppingList page
+    this.navCtrl.pop();
   }
 
 }
