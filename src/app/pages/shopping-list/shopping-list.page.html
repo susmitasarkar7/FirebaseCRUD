@@ -9,4 +9,12 @@
 
 <ion-content padding>
 
+  <ion-list>
+    <!-- Repeat the ion-item for as many items that we have inside of our shopping list. -->
+    <ion-item *ngFor="let item of shoppingListRef$ | async">
+      <h2>Item Name: {{item.itemName}}</h2>
+      <h3>Amount: {{item.itemNumber}}</h3>
+    </ion-item>
+  </ion-list>
+
 </ion-content>
