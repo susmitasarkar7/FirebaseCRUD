@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ShoppingItem } from 'src/app/models/shopping-item/shopping-item.interface';
+import { AngularFireDatabase, FirebaseListObservable } from "angularfire2/database";
 
 @Component({
   selector: 'app-add-shopping',
@@ -11,12 +12,36 @@ export class AddShoppingPage implements OnInit {
   // Creating a new object
   shoppingItem = {} as ShoppingItem;
 
-  constructor() { }
+  shoppingItemRef$: FirebaseListObservable<ShoppingItem[]>
+
+  constructor(private database: AngularFireDatabase) { 
+    this.shoppingItemRef$ = this.database.list('shopping-list');
+
+    /*
+      shopping-list:
+        0:
+          itemName: 'Pizza',
+          itemNumber: 1
+        1:
+          itemName: 'Nun',
+          itemNumber: 5
+    */
+  }
 
   ngOnInit() {
   }
 
   addShoppingItem(shoppingItem : ShoppingItem) {
+
+    /* 
+      Create a new anonymous object and convert itemNumber to a number.
+      Push this to our Firebase data under 'shopping-list' node.
+    */
+    this.shoppingItemRef$.push({
+      itemName: this.shoppingItem.itemName,
+      itemNumber: Number(this.shoppingItem.itemNumber)
+    });
+
     // Log the results out to the console
     console.log(shoppingItem);
   }
